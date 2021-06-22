@@ -108,11 +108,11 @@ LPCSTR FS_Path::_update(string_path& dest, LPCSTR src) const
 
 #ifdef XR_PLATFORM_LINUX
     string_path fullPath;
-    strconcat(sizeof(fullPath), fullPath, m_Path, temp);
-    xr_fs_strlwr(fullPath);
-    if (FS.exist(fullPath, FSType::External) || FS.exist(fullPath, FSType::Virtual)) {
-        xr_strcpy(dest, sizeof(dest), fullPath);
-        return xr_fs_strlwr(dest);
+    strconcat(fullPath, m_Path, temp);
+    if (FS.exist(fullPath, FSType::External) || FS.exist(fullPath, FSType::Virtual))
+    {
+        xr_strcpy(dest, fullPath);
+        return dest;
     }
 #endif
 

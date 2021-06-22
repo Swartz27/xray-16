@@ -461,7 +461,7 @@ void CInifile::Load(IReader* F, pcstr path, allow_include_func_t allow_include_f
                     if (I == nullptr)
                     {
                         xr_fs_nostrlwr(inc_name);
-                        strconcat(sizeof fn, fn, path, inc_name);
+                        strconcat(fn, path, inc_name);
                         I = FS.r_open(fn);
                     }
 #endif

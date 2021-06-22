@@ -633,9 +633,9 @@ void CLocatorAPI::ProcessOne(pcstr path, const _finddata_t& entry)
     xr_fs_strlwr(N);
 
     bool ignore = ignore_name(N);
-    if (ignore) {
+
+    if (ignore)
         return;
-    }
 
     if (entry.attrib & _A_HIDDEN)
         return;
