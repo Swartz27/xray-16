@@ -451,7 +451,6 @@ void CInifile::Load(IReader* F, pcstr path, allow_include_func_t allow_include_f
             R_ASSERT(path && path[0]);
             if (_GetItem(str, 1, inc_name, '"'))
             {
-                xr_fs_strlwr(inc_name); // compensate removed xr_strlwr on path on Linux, etc
                 string_path fn;
                 strconcat(sizeof fn, fn, path, inc_name);
                 if (!allow_include_func || allow_include_func(fn))
