@@ -98,7 +98,7 @@ public:
     void Destroy();
 
     void CreateRendererList();
-    bool CanSkipGameModuleLoading() const { return !!strstr(Core.Params, "-nogame"); }
+    bool CanSkipGameModuleLoading() const;
 
     CEngineAPI();
     ~CEngineAPI();

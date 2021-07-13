@@ -3,6 +3,7 @@
 #include "Rain.h"
 #include "IGame_Persistent.h"
 #include "Environment.h"
+#include "xrCore/CLOptions.h"
 
 #ifdef _EDITOR
 #include "ui_toolscustom.h"

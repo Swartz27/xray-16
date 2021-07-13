@@ -139,7 +139,8 @@ void xrMemory::mem_compact()
         g_pSharedMemoryContainer->clean();
 
 #if defined(XR_PLATFORM_WINDOWS)
-    if (strstr(Core.Params, "-swap_on_compact"))
+    static CLOption<bool> swap_on_compact("-swap_on_compact", "swap_on_compact", false);
+    if (swap_on_compact.OptionValue())
         SetProcessWorkingSetSize(GetCurrentProcess(), size_t(-1), size_t(-1));
 #endif
 }

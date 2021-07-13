@@ -2,6 +2,7 @@
 #include "Include/xrRender/DrawUtils.h"
 #include "Render.h"
 #include "xrCore/xr_token.h"
+#include "xrCore/CLOptions.h"
 #include "xrCDB/xrXRC.h"
 #include "XR_IOConsole.h"
 #include "MonitorManager.hpp"
@@ -43,10 +44,11 @@ void CRenderDevice::CreateInternal()
         return; // prevent double call
 
     Statistic = xr_new<CStats>();
-    bool gpuSW = !!strstr(Core.Params, "-gpu_sw");
-    bool gpuNonPure = !!strstr(Core.Params, "-gpu_nopure");
-    bool gpuRef = !!strstr(Core.Params, "-gpu_ref");
-    GEnv.Render->SetupGPU(gpuSW, gpuNonPure, gpuRef);
+    static CLOption<bool> gpu_sw("-gpu_sw", "gpu_sw", false);
+    static CLOption<bool> gpu_nopure("-gpu_nopure", "gpu_nopure", false);
+    static CLOption<bool> gpu_ref("-gpu_ref", "gpu_ref", false);
+    GEnv.Render->SetupGPU(gpu_sw.OptionValue(), gpu_nopure.OptionValue(),
+                          gpu_ref.OptionValue());
     Log("Starting RENDER device...");
 #ifdef _EDITOR
     psCurrentVidMode[0] = dwWidth;
@@ -87,14 +89,13 @@ void CRenderDevice::UpdateWindowProps(const bool windowed)
 {
     SelectResolution(windowed);
 
+    static CLOption<bool> draw_borders("-draw_borders", "draw_borders", false);
     if (windowed)
     {
-        static bool drawBorders = strstr(Core.Params, "-draw_borders");
-
         bool useDesktopFullscreen = false;
         if (b_is_Ready)
         {
-            if (!drawBorders && g_monitors.SelectedResolutionIsMaximal())
+            if (!draw_borders.OptionValue() && g_monitors.SelectedResolutionIsMaximal())
                 useDesktopFullscreen = true;
         }
 
@@ -104,7 +105,7 @@ void CRenderDevice::UpdateWindowProps(const bool windowed)
         if (!windowIntersectsWithMonitor(m_rcWindowBounds, rect))
             SDL_SetWindowPosition(m_sdlWnd, rect.x, rect.y);
 
-        SDL_SetWindowBordered(m_sdlWnd, drawBorders ? SDL_TRUE : SDL_FALSE);
+        SDL_SetWindowBordered(m_sdlWnd, draw_borders.OptionValue() ? SDL_TRUE : SDL_FALSE);
         SDL_SetWindowSize(m_sdlWnd, psCurrentVidMode[0], psCurrentVidMode[1]);
 
         // Set SDL_WINDOW_FULLSCREEN_DESKTOP if maximal resolution is selected

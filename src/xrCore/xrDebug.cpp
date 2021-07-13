@@ -7,6 +7,7 @@
 #include "xrDebug.h"
 #include "os_clipboard.h"
 #include "log.h"
+#include "CLOptions.h"
 #if defined(XR_PLATFORM_WINDOWS)
 #include "Debug/dxerr.h"
 #endif
@@ -936,7 +937,7 @@ void xrDebug::OnThreadSpawn()
 #endif
 }
 
-void xrDebug::Initialize(pcstr commandLine)
+void xrDebug::Initialize()
 {
     *BugReportFile = 0;
     OnThreadSpawn();
@@ -949,6 +950,8 @@ void xrDebug::Initialize(pcstr commandLine)
 #ifdef DEBUG
     ShowErrorMessage = true;
 #else
-    ShowErrorMessage = commandLine ? !!strstr(commandLine, "-show_error_window") : false;
+    static CLOption<bool> show_error_window("-show_error_window",
+                                            "show error window", false);
+    ShowErrorMessage = show_error_window.OptionValue();
 #endif
 }

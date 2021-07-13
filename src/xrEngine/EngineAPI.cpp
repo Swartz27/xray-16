@@ -9,6 +9,7 @@
 
 #include "xrCore/ModuleLookup.hpp"
 #include "xrCore/xr_token.h"
+#include "xrCore/CLOptions.h"
 
 #include "xrScriptEngine/ScriptExporter.hpp"
 
@@ -134,7 +135,8 @@ void CEngineAPI::Initialize(void)
     //////////////////////////////////////////////////////////////////////////
     // vTune
     tune_enabled = false;
-    if (strstr(Core.Params, "-tune"))
+    static CLOption<bool> ivtune("-tune", "intel vtune", false);
+    if (ivtune.OptionValue())
     {
         hTuner = XRay::LoadModule("vTuneAPI");
         tune_pause = (VTPause*)hTuner->GetProcAddress("VTPause");
@@ -278,6 +280,12 @@ void CEngineAPI::CreateRendererList()
             Log(mode.name);
     }
     modes.emplace_back(nullptr, -1);
+}
+
+bool CEngineAPI::CanSkipGameModuleLoading() const
+{
+    static CLOption<bool> nogame("-nogame", "nogame", false);
+    return nogame.OptionValue();
 }
 
 bool is_r2_available()

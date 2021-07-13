@@ -4,6 +4,7 @@
 #include "xrEngine/xr_object.h"
 #include "Common/LevelStructure.hpp"
 #include "xrEngine/xr_collide_form.h"
+#include "xrCore/CLOptions.h"
 
 
 //----------------------------------------------------------------------
@@ -116,7 +117,8 @@ void CObjectSpace::Create(Fvector* verts, CDB::TRI* tris, const hdrCFORM& H, CDB
     R_ASSERT(CFORM_CURRENT_VERSION == H.version);
 
     string_path fName;
-    bool bUseCache = strstr(Core.Params, "-cdb_cache");
+    static CLOption<bool> cdb_cache("-cdb_cache", "Cache CDB data", false);
+    bool bUseCache = cdb_cache.OptionValue();
     strconcat(fName, "cdb_cache" DELIMITER, FS.get_path("$level$")->m_Add, "objspace.bin");
     FS.update_path(fName, "$app_data_root$", fName);
     if (bUseCache && FS.exist(fName) && Static.deserialize(fName))

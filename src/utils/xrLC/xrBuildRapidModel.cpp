@@ -128,10 +128,9 @@ void CBuild::BuildRapid(BOOL bSaveForOtherCompilers)
     // save source SMF
     string_path fn;
 
-    bool keep_temp_files = !!strstr(Core.Params, "-keep_temp_files");
     if (g_params().m_quality != ebqDraft)
     {
-        if (keep_temp_files)
+        if (keep_temp_files.OptionValue())
             SaveAsSMF(strconcat(sizeof(fn), fn, pBuild->path, "build_cform_source.smf"), CL);
     }
 
@@ -159,7 +158,7 @@ void CBuild::BuildRapid(BOOL bSaveForOtherCompilers)
         }
         if (g_params().m_quality != ebqDraft)
         {
-            if (keep_temp_files)
+            if (keep_temp_files.OptionValue())
                 SaveUVM(strconcat(sizeof(fn), fn, pBuild->path, "build_cform_source.uvm"), rc_faces);
         }
 

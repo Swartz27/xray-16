@@ -7,6 +7,7 @@
 #include "GameFont.h"
 #include "PerformanceAlert.hpp"
 #include "xrCore/ModuleLookup.hpp"
+#include "xrCore/CLOptions.h"
 
 SDL_HitTestResult WindowHitTest(SDL_Window* win, const SDL_Point* area, void* data);
 
@@ -38,7 +39,8 @@ void CRenderDevice::Initialize()
     TimerGlobal.Start();
     TimerMM.Start();
 
-    if (strstr(Core.Params, "-weather"))
+    static CLOption<bool> weather("-weather", "initialize weather editor", 0);
+    if (weather.OptionValue())
         initialize_weather_editor();
 
     if (!m_sdlWnd)

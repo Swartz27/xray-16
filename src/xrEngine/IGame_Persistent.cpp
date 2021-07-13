@@ -4,6 +4,7 @@
 #include "IGame_Persistent.h"
 #include "GameFont.h"
 #include "PerformanceAlert.hpp"
+#include "xrCore/CLOptions.h"
 
 #ifndef _EDITOR
 #include "Environment.h"
@@ -134,7 +135,8 @@ void IGame_Persistent::OnGameStart()
 #ifndef _EDITOR
     SetLoadStageTitle("st_prefetching_objects");
     LoadTitle();
-    if (!strstr(Core.Params, "-noprefetch"))
+    static CLOption<bool> noprefetch("-noprefetch", "noprefetch", false);
+    if (!noprefetch.OptionValue())
         Prefetch();
 #endif
 }

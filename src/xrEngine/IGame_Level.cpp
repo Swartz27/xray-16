@@ -8,6 +8,7 @@
 #include "Render.h"
 #include "GameFont.h"
 #include "Common/LevelStructure.hpp"
+#include "xrCore/CLOptions.h"
 #include "CameraManager.h"
 #include "xr_object.h"
 #include "Feel_Sound.h"
@@ -29,7 +30,9 @@ IGame_Level::IGame_Level()
 
 IGame_Level::~IGame_Level()
 {
-    if (strstr(Core.Params, "-nes_texture_storing"))
+    static CLOption<bool> nes_texture_storing("-nes_texture_storing",
+                                              "nes_texture_storing", false);
+    if (nes_texture_storing.OptionValue())
         // Device.Resources->StoreNecessaryTextures();
         GEnv.Render->ResourcesStoreNecessaryTextures();
     xr_delete(pLevel);

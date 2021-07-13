@@ -270,6 +270,9 @@ void xrLoad(LPCSTR name, bool draft_mode)
         H.size_y = 1.f;
         H.aabb = LevelBB;
 
+        static CLOption<bool> keep_temp_files("-keep_temp_files",
+                                              "Keep temporary files", false);
+
         typedef u8 NodeLink[3];
         for (size_t i = 0; i < N; i++)
         {
@@ -295,7 +298,7 @@ void xrLoad(LPCSTR name, bool draft_mode)
 
         F->close();
 
-        if (!strstr(Core.Params, "-keep_temp_files"))
+        if (!keep_temp_files.OptionValue())
             DeleteFile(file_name);
     }
 }

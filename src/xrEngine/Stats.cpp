@@ -14,6 +14,7 @@
 #include "xrPhysics/IPHWorld.h"
 #include "PerformanceAlert.hpp"
 #include "xrCore/Threading/TaskManager.hpp"
+#include "xrCore/CLOptions.h"
 
 int g_ErrorLineCount = 15;
 Flags32 g_stats_flags = {0};
@@ -248,7 +249,8 @@ void CStats::Show()
 
 void CStats::OnDeviceCreate()
 {
-    g_bDisableRedText = !!strstr(Core.Params, "-xclsx");
+    static CLOption<bool> xclsx("-xclsx", "xclsx", false);
+    g_bDisableRedText = xclsx.OptionValue();
 
     if (!GEnv.isDedicatedServer)
     {
